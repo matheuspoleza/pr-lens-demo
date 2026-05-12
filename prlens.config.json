@@ -1,0 +1,17 @@
+{
+  "$schema": "https://prlens.app/schema.json",
+  "preview": {
+    "provider": "vercel",
+    "routes": [
+      { "path": "/", "name": "Landing" },
+      { "path": "/workspaces", "name": "Workspaces" },
+      { "path": "/workspaces/acme", "name": "Workspace Overview" },
+      { "path": "/workspaces/acme/settings", "name": "Workspace Settings" },
+      { "path": "/tasks", "name": "Tasks" },
+      { "path": "/pricing", "name": "Pricing" }
+    ]
+  },
+  "openapi": "openapi.yaml",
+  "prisma": "prisma/schema.prisma",
+  "viewports": ["desktop", "mobile"]
+}
