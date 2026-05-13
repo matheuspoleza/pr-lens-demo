@@ -38,6 +38,15 @@ export default function LandingPage() {
             The unit of work in Atlas.
           </p>
         </Link>
+        <Link
+          href="/pricing"
+          className="rounded-xl border border-neutral-200 bg-white p-4 hover:border-neutral-300 sm:col-span-2"
+        >
+          <p className="text-sm font-semibold">Pricing & AI credits</p>
+          <p className="text-sm text-neutral-600">
+            New: usage-based billing for AI features.
+          </p>
+        </Link>
       </nav>
     </main>
   );
