@@ -40,6 +40,7 @@ async function main() {
         title: "Ship the onboarding redesign",
         description: "Cover empty states for net-new workspaces.",
         status: "IN_PROGRESS",
+        priority: "HIGH",
         assigneeId: "u_iris",
       },
       {
