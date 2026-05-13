@@ -14,54 +14,8 @@ tags:
   - name: workspaces
   - name: tasks
   - name: memberships
-  - name: legacy
-    description: |
-      Token-authenticated read-only public API. Deprecated and scheduled
-      for removal — see `/developers/legacy`.
 
 paths:
-  /api/v0/workspaces:
-    get:
-      tags: [legacy]
-      summary: List the calling token's workspace (legacy v0)
-      operationId: legacyListWorkspaces
-      deprecated: true
-      parameters:
-        - name: x-api-token
-          in: header
-          required: true
-          schema: { type: string }
-      responses:
-        "200":
-          description: A single-item array with the workspace
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/LegacyWorkspace"
-
-  /api/v0/tasks:
-    get:
-      tags: [legacy]
-      summary: List tasks in the calling token's workspace (legacy v0)
-      operationId: legacyListTasks
-      deprecated: true
-      parameters:
-        - name: x-api-token
-          in: header
-          required: true
-          schema: { type: string }
-      responses:
-        "200":
-          description: Tasks in the workspace
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/LegacyTask"
-
   /api/v1/workspaces:
     get:
       tags: [workspaces]
@@ -237,23 +191,6 @@ paths:
 
 components:
   schemas:
-    LegacyWorkspace:
-      type: object
-      required: [id, slug, name, plan]
-      properties:
-        id: { type: string }
-        slug: { type: string }
-        name: { type: string }
-        plan: { type: string }
-    LegacyTask:
-      type: object
-      required: [id, workspaceId, title, status]
-      properties:
-        id: { type: string }
-        workspaceId: { type: string }
-        title: { type: string }
-        status: { type: string }
-        assigneeId: { type: string, nullable: true }
     Workspace:
       type: object
       required: [id, name, slug, createdAt]
