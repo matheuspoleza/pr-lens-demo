@@ -47,7 +47,7 @@ async function main() {
         title: "Ship the onboarding redesign",
         description: "Cover empty states for net-new workspaces.",
         status: "IN_PROGRESS",
-        priority: "high",
+        priority: "HIGH",
         assigneeId: "u_iris",
       },
       {
@@ -56,7 +56,7 @@ async function main() {
         title: "Audit feature-flag usage",
         description: "Find stale flags > 60 days old.",
         status: "TODO",
-        priority: "medium",
+        priority: "MEDIUM",
         assigneeId: "u_milo",
       },
       {
@@ -65,7 +65,7 @@ async function main() {
         title: "Cut Q2 release notes",
         description: null,
         status: "DONE",
-        priority: "low",
+        priority: "LOW",
         assigneeId: "u_jules",
       },
       {
@@ -74,7 +74,7 @@ async function main() {
         title: "Wire up Linear sync",
         description: null,
         status: "TODO",
-        priority: "none",
+        priority: "NONE",
         assigneeId: null,
       },
     ],
