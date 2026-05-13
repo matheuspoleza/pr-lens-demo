@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getWorkspaceBySlug, listTasksForWorkspace } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -8,9 +8,9 @@ interface PageProps {
 
 export default async function WorkspaceOverviewPage({ params }: PageProps) {
   const { slug } = await params;
-  const workspace = await getWorkspaceBySlug(slug);
+  const workspace = await prisma.workspace.findUnique({ where: { slug } });
   if (!workspace) notFound();
-  const tasks = await listTasksForWorkspace(workspace.id);
+  const tasks = await prisma.task.findMany({ where: { workspaceId: workspace.id } });
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">

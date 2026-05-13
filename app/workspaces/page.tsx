@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { listWorkspaces } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 
 export default async function WorkspacesIndexPage() {
-  const workspaces = await listWorkspaces();
+  const workspaces = await prisma.workspace.findMany();
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">
       <h1 className="mb-6 text-2xl font-semibold tracking-tight">Workspaces</h1>

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { workspaces } from "@/lib/seed";
+import { prisma } from "@/lib/prisma";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -7,7 +7,9 @@ interface RouteContext {
 
 export async function GET(_request: Request, { params }: RouteContext) {
   const { id } = await params;
-  const workspace = workspaces.find((w) => w.id === id || w.slug === id);
+  const workspace = await prisma.workspace.findFirst({
+    where: { OR: [{ id }, { slug: id }] },
+  });
   if (!workspace) {
     return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
   }

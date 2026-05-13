@@ -1,7 +1,7 @@
-import { listAllTasks } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 
 export default async function TasksIndexPage() {
-  const tasks = await listAllTasks();
+  const tasks = await prisma.task.findMany({ include: { workspace: true } });
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12">
       <h1 className="mb-6 text-2xl font-semibold tracking-tight">Tasks</h1>
