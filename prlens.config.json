@@ -8,7 +8,8 @@
       { "path": "/workspaces/acme", "name": "Workspace Overview" },
       { "path": "/workspaces/acme/settings", "name": "Workspace Settings" },
       { "path": "/tasks", "name": "Tasks" },
-      { "path": "/pricing", "name": "Pricing" }
+      { "path": "/pricing", "name": "Pricing" },
+      { "path": "/developers/legacy", "name": "Legacy API docs" }
     ]
   },
   "openapi": "openapi.yaml",
