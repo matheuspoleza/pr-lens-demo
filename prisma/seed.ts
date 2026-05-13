@@ -3,7 +3,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.legacyApiToken.deleteMany();
   await prisma.task.deleteMany();
   await prisma.membership.deleteMany();
   await prisma.workspace.deleteMany();
@@ -30,12 +29,6 @@ async function main() {
       { id: "m_2", userId: "u_milo", workspaceId: "w_acme", role: "ADMIN" },
       { id: "m_3", userId: "u_jules", workspaceId: "w_acme", role: "MEMBER" },
       { id: "m_4", userId: "u_iris", workspaceId: "w_lattice", role: "MEMBER" },
-    ],
-  });
-
-  await prisma.legacyApiToken.createMany({
-    data: [
-      { id: "lat_1", token: "lat_acme_sample", workspaceId: "w_acme", label: "Acme · CI sync" },
     ],
   });
 
