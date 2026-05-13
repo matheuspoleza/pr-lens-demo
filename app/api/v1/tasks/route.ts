@@ -18,6 +18,7 @@ export async function POST(request: Request) {
       title: body.title,
       description: body.description ?? null,
       status: "TODO",
+      priority: body.priority ?? "none",
       assigneeId: body.assigneeId ?? null,
     },
   });

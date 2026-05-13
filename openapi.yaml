@@ -135,6 +135,9 @@ paths:
                 workspaceId: { type: string }
                 title: { type: string }
                 description: { type: string }
+                priority:
+                  type: string
+                  enum: [none, low, medium, high, urgent]
                 assigneeId: { type: string }
       responses:
         "201":
@@ -217,6 +220,10 @@ components:
         status:
           type: string
           enum: [todo, in_progress, done, archived]
+        priority:
+          type: string
+          enum: [none, low, medium, high, urgent]
+          nullable: true
         assigneeId: { type: string }
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
