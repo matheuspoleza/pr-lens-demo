@@ -3,6 +3,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.notification.deleteMany();
+  await prisma.taskWatcher.deleteMany();
   await prisma.legacyApiToken.deleteMany();
   await prisma.task.deleteMany();
   await prisma.membership.deleteMany();
@@ -11,9 +13,24 @@ async function main() {
 
   await prisma.user.createMany({
     data: [
-      { id: "u_iris", email: "iris@atlas.app", name: "Iris" },
-      { id: "u_milo", email: "milo@atlas.app", name: "Milo" },
-      { id: "u_jules", email: "jules@atlas.app", name: "Jules" },
+      {
+        id: "u_iris",
+        email: "iris@atlas.app",
+        name: "Iris",
+        notificationPrefs: JSON.stringify({ inApp: true, email: true }),
+      },
+      {
+        id: "u_milo",
+        email: "milo@atlas.app",
+        name: "Milo",
+        notificationPrefs: JSON.stringify({ inApp: true, email: false }),
+      },
+      {
+        id: "u_jules",
+        email: "jules@atlas.app",
+        name: "Jules",
+        notificationPrefs: JSON.stringify({ inApp: false, email: true }),
+      },
     ],
   });
 
@@ -76,6 +93,33 @@ async function main() {
         status: "TODO",
         priority: "none",
         assigneeId: null,
+      },
+    ],
+  });
+
+  await prisma.taskWatcher.createMany({
+    data: [
+      { taskId: "t_1", userId: "u_iris" },
+      { taskId: "t_2", userId: "u_iris" },
+      { taskId: "t_1", userId: "u_milo" },
+    ],
+  });
+
+  await prisma.notification.createMany({
+    data: [
+      {
+        id: "n_1",
+        userId: "u_iris",
+        taskId: "t_2",
+        kind: "status_changed",
+        body: "Milo moved 'Audit feature-flag usage' to IN_PROGRESS",
+      },
+      {
+        id: "n_2",
+        userId: "u_iris",
+        taskId: "t_1",
+        kind: "status_changed",
+        body: "You moved 'Ship the onboarding redesign' to IN_PROGRESS",
       },
     ],
   });
