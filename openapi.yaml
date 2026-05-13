@@ -75,6 +75,40 @@ paths:
         "404":
           description: Workspace not found
 
+  /api/v1/workspaces/{id}/activity:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string }
+      - name: limit
+        in: query
+        required: false
+        description: Maximum number of events to return (1-200, default 50).
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 50
+    get:
+      tags: [workspaces]
+      summary: List recent activity events for a workspace
+      operationId: listWorkspaceActivity
+      responses:
+        "200":
+          description: A list of activity events, most recent first
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ActivityEvent"
+        "404":
+          description: Workspace not found
+
   /api/v1/workspaces/{id}/members:
     parameters:
       - name: id
@@ -196,6 +230,18 @@ components:
         name: { type: string }
         slug: { type: string }
         createdAt: { type: string, format: date-time }
+    ActivityEvent:
+      type: object
+      required: [id, workspaceId, type, actorId, subjectId, occurredAt]
+      properties:
+        id: { type: string }
+        workspaceId: { type: string }
+        type:
+          type: string
+          enum: [task.created, task.status_changed, member.added]
+        actorId: { type: string }
+        subjectId: { type: string }
+        occurredAt: { type: string, format: date-time }
     Membership:
       type: object
       required: [id, userId, workspaceId, role]
