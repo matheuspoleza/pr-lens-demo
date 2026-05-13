@@ -79,6 +79,16 @@ async function main() {
       },
     ],
   });
+
+  await prisma.activityEvent.deleteMany();
+  await prisma.activityEvent.createMany({
+    data: [
+      { id: "a_1", workspaceId: "w_acme", type: "task.created", actorId: "u_iris", subjectId: "t_1" },
+      { id: "a_2", workspaceId: "w_acme", type: "member.added", actorId: "u_iris", subjectId: "u_milo" },
+      { id: "a_3", workspaceId: "w_acme", type: "task.status_changed", actorId: "u_milo", subjectId: "t_1" },
+      { id: "a_4", workspaceId: "w_lattice", type: "task.created", actorId: "u_iris", subjectId: "t_4" },
+    ],
+  });
 }
 
 main()

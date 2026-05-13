@@ -75,3 +75,14 @@ model Task {
   @@index([workspaceId, status])
   @@index([assigneeId])
 }
+
+model ActivityEvent {
+  id          String   @id @default(cuid())
+  workspaceId String
+  type        String
+  actorId     String
+  subjectId   String
+  occurredAt  DateTime @default(now())
+
+  @@index([workspaceId, occurredAt])
+}
