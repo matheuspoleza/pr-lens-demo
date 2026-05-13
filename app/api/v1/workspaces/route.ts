@@ -1,20 +1,19 @@
 import { NextResponse } from "next/server";
-import { listWorkspaces } from "@/lib/data";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
-  const data = await listWorkspaces();
+  const data = await prisma.workspace.findMany();
   return NextResponse.json({ data });
 }
 
 export async function POST(request: Request) {
   const body = await request.json();
-  return NextResponse.json(
-    {
-      id: `w_${Math.random().toString(36).slice(2, 8)}`,
+  const workspace = await prisma.workspace.create({
+    data: {
       slug: body.slug,
       name: body.name,
       plan: "FREE",
     },
-    { status: 201 },
-  );
+  });
+  return NextResponse.json(workspace, { status: 201 });
 }

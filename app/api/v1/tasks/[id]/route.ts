@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { tasks } from "@/lib/seed";
+import { prisma } from "@/lib/prisma";
 
 interface RouteContext {
   params: Promise<{ id: string }>;
@@ -7,7 +7,7 @@ interface RouteContext {
 
 export async function GET(_request: Request, { params }: RouteContext) {
   const { id } = await params;
-  const task = tasks.find((t) => t.id === id);
+  const task = await prisma.task.findUnique({ where: { id } });
   if (!task) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
   }
@@ -17,9 +17,10 @@ export async function GET(_request: Request, { params }: RouteContext) {
 export async function PATCH(request: Request, { params }: RouteContext) {
   const { id } = await params;
   const body = await request.json();
-  const task = tasks.find((t) => t.id === id);
-  if (!task) {
+  const existing = await prisma.task.findUnique({ where: { id } });
+  if (!existing) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
   }
-  return NextResponse.json({ ...task, ...body });
+  const updated = await prisma.task.update({ where: { id }, data: body });
+  return NextResponse.json(updated);
 }
