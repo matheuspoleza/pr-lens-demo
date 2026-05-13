@@ -14,6 +14,7 @@ tags:
   - name: workspaces
   - name: tasks
   - name: memberships
+  - name: billing
   - name: legacy
     description: |
       Token-authenticated read-only public API. Deprecated and scheduled
@@ -144,6 +145,51 @@ paths:
                     items:
                       $ref: "#/components/schemas/Membership"
 
+  /api/v1/workspaces/{id}/subscription:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string }
+    get:
+      tags: [billing]
+      summary: Get the current subscription for a workspace
+      operationId: getSubscription
+      responses:
+        "200":
+          description: The active subscription
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscription"
+        "404":
+          description: No subscription found for this workspace
+
+  /api/v1/workspaces/{id}/usage:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string }
+      - name: period
+        in: query
+        required: false
+        description: ISO month string (YYYY-MM). Defaults to the current month.
+        schema:
+          type: string
+          pattern: '^\d{4}-\d{2}$'
+    get:
+      tags: [billing]
+      summary: Get usage summary for the workspace's current period
+      operationId: getUsageSummary
+      responses:
+        "200":
+          description: Usage summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageSummary"
+
   /api/v1/tasks:
     get:
       tags: [tasks]
@@ -272,6 +318,28 @@ components:
         role:
           type: string
           enum: [owner, admin, member, viewer]
+    Subscription:
+      type: object
+      required: [id, workspaceId, status, includedAICredits, overageRateCents, currentPeriodEnd]
+      properties:
+        id: { type: string }
+        workspaceId: { type: string }
+        status:
+          type: string
+          enum: [trialing, active, past_due, canceled]
+        includedAICredits: { type: integer }
+        overageRateCents: { type: integer }
+        currentPeriodEnd: { type: string, format: date-time }
+    UsageSummary:
+      type: object
+      required: [workspaceId, period, unitsUsed, includedUnits, overageUnits, overageCostCents]
+      properties:
+        workspaceId: { type: string }
+        period: { type: string, description: "ISO month (YYYY-MM)" }
+        unitsUsed: { type: integer }
+        includedUnits: { type: integer }
+        overageUnits: { type: integer }
+        overageCostCents: { type: integer }
     Task:
       type: object
       required: [id, workspaceId, title, status, createdAt]
